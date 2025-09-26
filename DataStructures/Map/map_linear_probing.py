@@ -47,3 +47,16 @@ def put(my_map, key, value):
             me.set_value(entry, value)
             return my_map
     return my_map 
+
+def rehash(my_map):
+     my_map["capacity"] *= 2
+     table = my_map["table"]
+     table["size"] = my_map["capacity"]
+     new_elements = []
+     
+     for key in table["elements"]:
+        if al.is_present(table, key) == mf.hash_value(table, key):
+            al.add_last(new_elements, key)
+        al.insert_element(new_elements, key, mf.hash_value(table, key))
+        
+        
