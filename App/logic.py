@@ -28,6 +28,8 @@ import os
 import csv
 import time
 import tracemalloc
+from DataStructures.Map import map_linear_probing as lp
+from DataStructures.List import array_list as al
 
 
 # TODO Realice la importación del mapa linear probing
