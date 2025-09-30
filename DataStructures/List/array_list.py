@@ -10,7 +10,13 @@ def get_element(my_list, index):
     
     return my_list["elements"][index]
 
-def is_present(my_list, element, cmp_function):
+def default_sort_criteria(element_1, element_2):
+    is_sorted = False
+    if element_1 < element_2:
+        is_sorted=True
+    return is_sorted
+
+def is_present(my_list, element, cmp_function=default_sort_criteria):
     
     size = my_list["size"]
     if size > 0:
@@ -114,12 +120,6 @@ def delete_element(my_list, pos):
     del my_list["elements"][pos]
     my_list["size"] -= 1
     return my_list
-
-def default_sort_criteria(element_1, element_2):
-    is_sorted = False
-    if element_1 < element_2:
-        is_sorted=True
-    return is_sorted
 
 def selection_sort(my_list,sort_crit):
     s = size(my_list)
