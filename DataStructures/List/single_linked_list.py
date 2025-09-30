@@ -2,151 +2,148 @@ from DataStructures.List import list_node as ns
 
 
 def new_list():
-    newlist = {
-        "first": None,
-        "last": None,
-        "size": 0,
-    }
-    
-    return newlist
+    return {"first": None, "last": None, "size": 0}
 
-def add_first(list, element):
+
+def is_empty(lst):
+    return lst["size"] == 0
+
+
+def size(lst):
+    return lst["size"]
+
+
+def add_first(lst, element):
     n = ns.new_single_node(element)
-    if is_empty(list):
-        list["last"] = n
-    n["next"] = list["first"]
-    list["first"] = n
-    list["size"] += 1
-    return list
-    
+    if is_empty(lst):
+        lst["last"] = n
+    n["next"] = lst["first"]
+    lst["first"] = n
+    lst["size"] += 1
+    return lst
 
-def add_last(list, element):
+
+def add_last(lst, element):
     n = ns.new_single_node(element)
-    if is_empty(list):
-        list["first"] = n
-        list["last"] = n
-        list["size"] += 1
-        return list
+    if is_empty(lst):
+        lst["first"] = n
+        lst["last"] = n
     else:
-        list["last"]["next"] = n
-        list["last"] = n
-    list["size"] += 1
-    return list
+        lst["last"]["next"] = n
+        lst["last"] = n
+    lst["size"] += 1
+    return lst
 
-def size(list):
-    return list["size"]
 
-def first_element(list):
-    if is_empty(list):
-        raise Exception("Error, indexacion fuera de rango: No hay elementos para leer")
-    else:
-        n = list["first"]
-        return n["info"]
-    
-def last_element(list):
-    if is_empty(list):
-        raise Exception("Error, indexacion fuera de rango: No hay elementos para leer")
-    else:
-        n = list["last"]
-        return n["info"]
+def first_element(lst):
+    if is_empty(lst):
+        raise Exception("Lista vacía")
+    return lst["first"]["info"]
 
-def is_empty(list):
-    return list["size"] == 0
-    
-def get_element(list, pos):
-    n = list["first"] # indexacion 0
+
+def last_element(lst):
+    if is_empty(lst):
+        raise Exception("Lista vacía")
+    return lst["last"]["info"]
+
+
+def get_element(lst, pos):
+    if pos < 0 or pos >= lst["size"]:
+        raise Exception("IndexError: fuera de rango")
+    n = lst["first"]
     for i in range(pos):
         n = n["next"]
-    elemento = n["info"]
-    return elemento
-
-def remove_first(list):
-    if is_empty(list):
-        raise Exception("Error: Indexación fuera de rango -> list['first'] != NoneType")
-    n = list["first"]
-    list["first"] = n["next"]
-    list["size"] -= 1
     return n["info"]
-        
-def remove_last(list):
-   if is_empty(list):
-       raise Exception("Error: Indexación fuera de rango -> list['last'] != NoneType")
-   n = list["first"]
-   last = list["last"]
-   
-   if n == last:
-       list["first"] = None
-       list["last"] = None
-       list["size"] = 0
-       return last["info"]
-   
-   while n["next"] == last:
-       n = n["next"]
 
-   list["last"] = n
-   list["last"]["next"] = None
-   list["size"] -= 1
-   return last["info"]
 
-def insert_element(list, element, pos):
-    if 0 <= pos <= size(list):
-       node = ns.new_single_node(element)
-       if is_empty(list):
-         raise Exception("Error: Indexación fuera de rango -> Solo existe la posicion 0, pero el arreglo esta vacio.")
-       node_anterior = list["first"]
-       for i in range(pos-1):
-            node_anterior = node_anterior["next"]
-       node["next"] = node_anterior["next"]
-       node_anterior["next"] = node
-       return list
-    else:
-        raise Exception('IndexError: list index out of range') # esto esta en la documentacion de DISC - Data Structures btw
-        
-        
-def is_present(list, element, cmp_function):
-    if is_empty(list):
-        return -1
-    nodo_buscar = list["first"]
+def remove_first(lst):
+    if is_empty(lst):
+        raise Exception("Lista vacía")
+    n = lst["first"]
+    lst["first"] = n["next"]
+    if lst["first"] is None:
+        lst["last"] = None
+    lst["size"] -= 1
+    return n["info"]
+
+
+def remove_last(lst):
+    if is_empty(lst):
+        raise Exception("Lista vacía")
+    if lst["first"] == lst["last"]:
+        info = lst["last"]["info"]
+        lst["first"] = None
+        lst["last"] = None
+        lst["size"] = 0
+        return info
+    n = lst["first"]
+    while n["next"] != lst["last"]:
+        n = n["next"]
+    info = lst["last"]["info"]
+    n["next"] = None
+    lst["last"] = n
+    lst["size"] -= 1
+    return info
+
+
+def delete_element(lst, pos):
+    if pos < 0 or pos >= lst["size"]:
+        raise Exception("IndexError: fuera de rango")
+    if pos == 0:
+        remove_first(lst)
+        return lst
+
+    prev = lst["first"]
+    for i in range(pos - 1):
+        prev = prev["next"]
+
+    target = prev["next"]
+    prev["next"] = target["next"]
+
+    if target is lst["last"]:
+        lst["last"] = prev
+
+    lst["size"] -= 1
+    return lst
+
+
+def insert_element(lst, element, pos):
+    if pos < 0 or pos > lst["size"]:
+        raise Exception("IndexError: fuera de rango")
+    if pos == 0:
+        return add_first(lst, element)
+    if pos == lst["size"]:
+        return add_last(lst, element)
+    node = ns.new_single_node(element)
+    prev = lst["first"]
+    for i in range(pos - 1):
+        prev = prev["next"]
+    node["next"] = prev["next"]
+    prev["next"] = node
+    lst["size"] += 1
+    return lst
+
+
+def is_present(lst, element, cmp_function):
+    n = lst["first"]
     index = 0
-    while nodo_buscar != None:
-        if cmp_function(element, nodo_buscar["info"]) == 0:
+    while n is not None:
+        if cmp_function(element, n["info"]) == 0:
             return index
-        nodo_buscar = nodo_buscar["next"]
+        n = n["next"]
+        index += 1
     return -1
-        
-def delete_element(list, pos):
-    if 0 <= pos <= size(list):
-        if is_empty(list):
-           raise Exception("Error: Indexación fuera de rango -> No se puede borrar elementos si no existe ninguno que borrar.")
-        n_anterior = list["first"]
-    
-        for i in range(pos-1):
-            n_anterior = n_anterior["next"]
-            
-        if n_anterior["next"] == None:
-            list["first"] = None
-            list["Last"] = None
-            list["Size"] = 0
-            return list
-        else:
-            n_borrar = n_anterior["next"]
-            n_anterior["next"] = n_borrar["next"]
-            list["size"] -= 1
-            return list
-    else:
-        raise Exception('IndexError: list index out of range') # esto esta en la documentacion de DISC - Data Structures btw x2
-        
-def change_info(list, pos, new_info):
-    if 0 <= pos <= size(list):
-        if is_empty(list):
-            raise Exception("Error: Indexación fuera de rango -> No se puede borrar elementos si no existe ninguno que borrar.")
-        n_cambio = list["first"]
-        for i in range(pos):
-            n_cambio = n_cambio["next"]
-        n_cambio["info"] = new_info
-        return list
-    else:
-        raise Exception('IndexError: list index out of range') # esto esta en la documentacion de DISC - Data Structures btw x3
+
+
+def change_info(lst, pos, new_info):
+    if pos < 0 or pos >= lst["size"]:
+        raise Exception("IndexError: fuera de rango")
+    n = lst["first"]
+    for i in range(pos):
+        n = n["next"]
+    n["info"] = new_info
+    return lst
+
 
 def exchange(list, pos1, pos2):
         if not(0 <= pos1 <= size(list) and 0 <= pos2 <= size(list)):
