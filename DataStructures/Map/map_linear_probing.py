@@ -54,7 +54,7 @@ def find_slot(my_map, key, hash_value):
     s = hash_value
 
     for i in range(c):
-        idx = (s + i) % c   # corregido: antes era (s+1) % c
+        idx = (s + i) % c  
         if is_available(t, idx):
             if available is None:
                 available = idx
@@ -82,7 +82,6 @@ def rehash(my_map):
     new_table["elements"] = new_list_elems
     new_table["size"] = new_capacity
 
-    # ajustar mapa
     my_map["capacity"] = new_capacity
     my_map["table"] = new_table
     my_map["size"] = 0
