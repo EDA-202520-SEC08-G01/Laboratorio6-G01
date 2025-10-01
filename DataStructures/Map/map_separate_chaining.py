@@ -46,7 +46,7 @@ def put(my_map, key, value):
     for i in range(sll.size(chain)):
         entry = sll.get_element(chain, i)
         if default_compare(key, entry) == 0:
-            me.set_value(entry, value)
+            me.set_value(entry, int(value))
             return my_map
 
     # no existe → añadir nodo nuevo
@@ -103,7 +103,7 @@ def is_empty(my_map):
 
 def key_set(my_map):
     keys = al.new_list()
-    buckets = my_map["table"]["elements"]
+    buckets = my_map["table"]
     for i in range(my_map["capacity"]):
         bucket = buckets[i]
         node = bucket["first"]
@@ -116,7 +116,7 @@ def key_set(my_map):
 
 def value_set(my_map):
     values = al.new_list()
-    buckets = my_map["table"]["elements"]
+    buckets = my_map["table"]
     for i in range(my_map["capacity"]):
         bucket = buckets[i]
         node = bucket["first"]
