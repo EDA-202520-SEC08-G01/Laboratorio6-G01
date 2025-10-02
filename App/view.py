@@ -54,8 +54,8 @@ def load_data(control):
     """
     Solicita a la controlador que cargue los datos
     """
-    books, authors, tags, book_tags, tiempotranscurrido, memoria_usada = logic.load_data(control)
-    return books, authors, tags, book_tags, tiempotranscurrido, memoria_usada
+    books, authors, tags, book_tags, tiempo_transcurrido, memoria_usada = logic.load_data(control)
+    return books, authors, tags, book_tags, tiempo_transcurrido, memoria_usada
 
 #  -------------------------------------------------------------
 # Funciones para la correcta impresión de los datos
@@ -153,7 +153,7 @@ def main():
         # TODO agregar tiempo de ejecución y consumo de memoria
         if int(inputs[0]) == 1:
             print("Cargando información de los archivos ....")
-            bk, at, tg, bktg = load_data(control)
+            bk, at, tg, bktg, tiempo_transcurrido, memoria_usada = load_data(control)
             print('Libros cargados: ' + str(bk))
             print('Autores cargados: ' + str(at))
             print('Géneros cargados: ' + str(tg))
