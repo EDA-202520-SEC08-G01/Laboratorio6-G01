@@ -77,6 +77,12 @@ def print_book_info(book):
     """
     Imprime los mejores libros solicitados
     """
+    
+    # NOTE: no se pueden leer tuplas con indices de la indole "str", lo cual nuestro linear probing (donde se toman los datos)
+    # bota el dict y el hash en una tupla, decidimos no tocar la funcion porque asi fue como se nos entrego y no hay en ningun lugar
+    # donde diga que tengamos que editar estas funciones, pero en el caso que se pueda se deberia declarar book como "book[0]" para
+    # que tome los datos del diccionario y no bote error
+    
     if book:
         print('Titulo: ' + book['title'] + '  ISBN: ' +
                   book['isbn'] + ' Rating: ' + book['average_rating'] +
